@@ -2,7 +2,6 @@ export const increaseArr = (arr: number[]) => {
   if (!Array.isArray(arr)) {
     return 'Not a array';
   }
-  console.log(arr, !arr.every(item => typeof item === 'number'));
   if (!arr.every(item => typeof item === 'number')) {
     return 'Array have element not a number';
   }
