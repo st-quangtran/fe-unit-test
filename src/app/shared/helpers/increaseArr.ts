@@ -1,15 +1,8 @@
 export const increaseArr = (arr: number[]) => {
-  if (!Array.isArray(arr)) {
-    return 'Not a array';
+  if (!Array.isArray(arr) || arr.length < 2) {
+    return false;
   }
-  console.log(arr, !arr.every(item => typeof item === 'number'));
-  if (!arr.every(item => typeof item === 'number')) {
-    return 'Array have element not a number';
-  }
-  for (let i = 0; i < arr.length - 1; i++) {
-    if (arr[i] > arr[i + 1]) {
-      return false;
-    }
-  }
-  return true;
+  return arr.every((item: number, index: number) => {
+    return typeof item === 'number' && (index === 0 || item >= arr[index - 1]);
+  });
 };
