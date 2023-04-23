@@ -63,18 +63,15 @@ describe('test product order', () => {
   describe('get order', () => {
     const order = new Order([product1]);
     const ord = order.getOrder();
+    const product = order.getProductInOrder('1');
     test('get product success', () => {
       expect(ord).toHaveLength(1);
       expect(ord).toContain(product1);
-    });
-  });
-
-  describe('get product in order', () => {
-    const order = new Order([product1]);
-    const product = order.getProductInOrder('1');
-    test('get product in order success', () => {
       expect(product).toEqual(product1);
     });
+    test('payment', () => {
+      expect(order.getTotalPayment()).toBe(9200);
+    })
   });
 
   describe('add product', () => {
@@ -85,15 +82,22 @@ describe('test product order', () => {
       expect(order.getOrder()).toContain(product1);
       expect(order.getOrder()).toContain(product2);
     });
+    test('payment', () => {
+      expect(order.getTotalPayment()).toBe(35600);
+    })
   });
 
   describe('remove product in order', () => {
     const order = new Order([product1]);
+    order.addProductToOrder(product2);
     order.removeProductInOrder('1');
     test('remove product in order success', () => {
-      expect(order.getOrder()).toHaveLength(0);
-      expect(order.getOrder()).toEqual([]);
+      expect(order.getOrder()).toHaveLength(1);
+      expect(order.getOrder()).toContain(product2);
     });
+    test('payment', () => {
+      expect(order.getTotalPayment()).toBe(26400);
+    })
   });
 
   describe('update product in order', () => {
@@ -103,6 +107,9 @@ describe('test product order', () => {
       expect(order.getOrder()).toHaveLength(1);
       expect(order.getOrder()).toContain(productUpdate);
     });
+    test('payment', () => {
+      expect(order.getTotalPayment()).toBe(4750);
+    })
   });
 
   describe('remove order', () => {
@@ -112,23 +119,8 @@ describe('test product order', () => {
       expect(order.getOrder()).toHaveLength(0);
       expect(order.getOrder()).toEqual([]);
     });
-  });
-
-  describe('getTotalPayment', () => {
-    let order = new Order([product1]);
-    beforeEach(() => {
-      order = new Order([product1]);
-    });
-    test('getTotalPayment success', () => {
-      expect(order.getTotalPayment()).toBe(9200);
-    });
-    test('getTotalPayment after add new product', () => {
-      order.addProductToOrder(product2);
-      expect(order.getTotalPayment()).toBe(35600);
-    });
-    test('getTotalPayment after update product in order', () => {
-      order.updateProductInOrder(productUpdate);
-      expect(order.getTotalPayment()).toBe(4750);
-    });
+    test('payment', () => {
+      expect(order.getTotalPayment()).toBe(0);
+    })
   });
 });
